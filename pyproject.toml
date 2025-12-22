@@ -2,7 +2,9 @@
 name = "hexlet-code"
 version = "0.1.0"
 description = "Page Analyzer project"
-authors = ["Your Name <you@example.com>"]
+authors = [
+  { name = "trun", email = "e.s.trunov@gmail.com" }
+]
 readme = "README.md"
 packages = [
     { include = "page_analyzer" }
