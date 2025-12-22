@@ -12,7 +12,7 @@ packages = [
 python = "^3.11"
 Flask = "^2.3.2"
 python-dotenv = "^1.0.1"
-psycopg[binary] = "^3.2.1"
+psycopg = { version = "^3.2.1", extras = ["binary"] }
 validators = "^0.21.1"
 requests = "^2.32.0"
 beautifulsoup4 = "^4.12.2"
