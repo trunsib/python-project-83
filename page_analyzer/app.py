@@ -2,10 +2,10 @@ import os
 from datetime import datetime
 from urllib.parse import urlparse
 
-import psycopg
+import psycopg2
 import validators
 import requests
-from psycopg.rows import dict_row
+from psycopg2.extras import RealDictCursor
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from flask import (
@@ -24,7 +24,10 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
 def get_connection():
-    return psycopg.connect(os.getenv('DATABASE_URL'), row_factory=dict_row)
+    return psycopg2.connect(
+        os.getenv('DATABASE_URL'),
+        cursor_factory=RealDictCursor
+    )
 
 
 
