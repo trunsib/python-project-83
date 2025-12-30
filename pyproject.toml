@@ -1,5 +1,5 @@
 [project]
-name = "page-analyzer"
+name = "hexlet-code"
 version = "0.1.0"
 description = "Page Analyzer project"
 authors = [
