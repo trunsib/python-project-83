@@ -2,33 +2,18 @@ import os
 from datetime import datetime
 from urllib.parse import urlparse
 
-import psycopg2
 import validators
 import requests
-from psycopg2.extras import RealDictCursor
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from flask import (
-    Flask,
-    render_template,
-    request,
-    redirect,
-    url_for,
-    flash,
-)
+from flask import Flask, render_template, request, redirect, url_for, flash
+
+from page_analyzer.db import get_connection
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
-
-def get_connection():
-    return psycopg2.connect(
-        os.getenv('DATABASE_URL'),
-        cursor_factory=RealDictCursor
-    )
-
 
 
 @app.route('/')
@@ -49,10 +34,7 @@ def add_url():
 
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute(
-                'SELECT id FROM urls WHERE name = %s',
-                (normalized_url,)
-            )
+            cur.execute('SELECT id FROM urls WHERE name = %s', (normalized_url,))
             existing = cur.fetchone()
 
             if existing:
@@ -95,8 +77,8 @@ def urls():
                 ORDER BY urls.id DESC
                 '''
             )
-            urls = cur.fetchall()
-    return render_template('urls.html', urls=urls)
+            urls_list = cur.fetchall()
+    return render_template('urls.html', urls=urls_list)
 
 
 @app.get('/urls/<int:id>')

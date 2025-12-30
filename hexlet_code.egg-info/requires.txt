@@ -1,0 +1,9 @@
+app>=0.0.1
+bs4>=0.0.2
+dotenv>=0.9.9
+flask
+gunicorn
+psycopg>=3.3.2
+python-dotenv
+rows>=0.4.1
+validators>=0.35.0

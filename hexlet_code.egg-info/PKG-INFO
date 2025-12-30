@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: hexlet-code
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: app>=0.0.1
+Requires-Dist: bs4>=0.0.2
+Requires-Dist: dotenv>=0.9.9
+Requires-Dist: flask
+Requires-Dist: gunicorn
+Requires-Dist: psycopg>=3.3.2
+Requires-Dist: python-dotenv
+Requires-Dist: rows>=0.4.1
+Requires-Dist: validators>=0.35.0
+
+### Hexlet tests and linter status:
+[![Actions Status](https://github.com/trunsib/python-project-83/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/trunsib/python-project-83/actions)
+
