@@ -7,12 +7,13 @@ authors = [
 ]
 readme = "README.md"
 dependencies = [
-  "flask",
-  "psycopg2-binary",
-  "validators",
-  "beautifulsoup4",
-  "python-dotenv",
-  "requests"
+    "flask",
+    "psycopg2-binary",
+    "validators",
+    "requests",
+    "beautifulsoup4",
+    "python-dotenv",
+    "gunicorn"
 ]
 
 [tool.poetry]
