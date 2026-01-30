@@ -26,8 +26,8 @@ def add_url():
     url = request.form.get('url')
 
     if not validators.url(url) or len(url) > 255:
-        flash('Invalid URL', 'danger')
-        return render_template('index.html')
+        flash('Некорректный URL', 'danger')
+        return render_template('index.html'), 422
 
     parsed = urlparse(url)
     normalized_url = f'{parsed.scheme}://{parsed.netloc}'
@@ -38,7 +38,7 @@ def add_url():
             existing = cur.fetchone()
 
             if existing:
-                flash('URL already exists', 'info')
+                flash('Страница успешно добавлена', 'success')
                 return redirect(url_for('show_url', id=existing['id']))
 
             cur.execute(
@@ -51,7 +51,7 @@ def add_url():
             )
             url_id = cur.fetchone()['id']
 
-    flash('URL added successfully', 'success')
+    flash('Страница успешно добавлена', 'success')
     return redirect(url_for('show_url', id=url_id))
 
 
@@ -118,7 +118,6 @@ def run_check(id):
         status_code = response.status_code
         html = response.text
     except Exception:
-        flash('Произошла ошибка при проверке', 'danger')
         status_code = None
         html = ''
 
