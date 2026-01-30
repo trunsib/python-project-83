@@ -38,18 +38,15 @@ def add_url():
             existing = cur.fetchone()
 
             if existing:
-                flash('Страница успешно добавлена', 'success')
+                flash('Страница уже существует', 'info')
                 return redirect(url_for('show_url', id=existing['id']))
 
             cur.execute(
-                '''
-                INSERT INTO urls (name, created_at)
-                VALUES (%s, %s)
-                RETURNING id
-                ''',
+                'INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id',
                 (normalized_url, datetime.utcnow())
             )
             url_id = cur.fetchone()['id']
+            conn.commit()
 
     flash('Страница успешно добавлена', 'success')
     return redirect(url_for('show_url', id=url_id))
@@ -88,6 +85,10 @@ def show_url(id):
             cur.execute('SELECT * FROM urls WHERE id = %s', (id,))
             url = cur.fetchone()
 
+            if not url:
+                flash('URL не найден', 'danger')
+                return redirect(url_for('urls'))
+
             cur.execute(
                 '''
                 SELECT id, created_at, status_code, h1, title, description
@@ -117,7 +118,7 @@ def run_check(id):
         response = requests.get(url_to_check, timeout=10)
         status_code = response.status_code
         html = response.text
-    except Exception:
+    except requests.RequestException:
         status_code = None
         html = ''
 
@@ -147,4 +148,3 @@ def run_check(id):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
