@@ -13,7 +13,7 @@ from page_analyzer.db import get_connection
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') or 'dev'
 
 
 @app.route('/')
@@ -27,7 +27,7 @@ def add_url():
 
     if not validators.url(url) or len(url) > 255:
         flash('Invalid URL', 'danger')
-        return render_template('index.html'), 422
+        return render_template('index.html')
 
     parsed = urlparse(url)
     normalized_url = f'{parsed.scheme}://{parsed.netloc}'
@@ -115,20 +115,21 @@ def run_check(id):
 
     try:
         response = requests.get(url_to_check, timeout=10)
-        response.raise_for_status()
         status_code = response.status_code
-    except (requests.RequestException, requests.Timeout):
+        html = response.text
+    except Exception:
         flash('Произошла ошибка при проверке', 'danger')
-        return redirect(url_for('show_url', id=id))
+        status_code = None
+        html = ''
 
-    soup = BeautifulSoup(response.text, 'html.parser')
+    soup = BeautifulSoup(html, 'html.parser')
     h1_tag = soup.find('h1')
     title_tag = soup.find('title')
     description_tag = soup.find('meta', attrs={'name': 'description'})
 
     h1_text = h1_tag.get_text(strip=True) if h1_tag else None
     title_text = title_tag.get_text(strip=True) if title_tag else None
-    description_text = description_tag['content'].strip() if description_tag else None
+    description_text = description_tag['content'].strip() if description_tag and description_tag.get('content') else None
 
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -143,3 +144,7 @@ def run_check(id):
 
     flash('Проверка успешно выполнена', 'success')
     return redirect(url_for('show_url', id=id))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

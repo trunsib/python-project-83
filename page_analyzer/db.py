@@ -6,8 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_connection():
-    """Возвращает подключение к базе данных."""
+    database_url = os.getenv('DATABASE_URL')
+
+    if not database_url:
+        database_url = "postgresql://postgres:postgres@localhost:5432/postgres"
+
     return psycopg2.connect(
-        os.getenv('DATABASE_URL'),
+        database_url,
         cursor_factory=RealDictCursor
     )
