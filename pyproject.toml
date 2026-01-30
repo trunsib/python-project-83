@@ -2,6 +2,7 @@
 name = "hexlet-code"
 version = "0.1.0"
 description = "Page Analyzer project"
+package-mode = false
 authors = [
   { name = "trun", email = "e.s.trunov@gmail.com" }
 ]
