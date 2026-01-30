@@ -142,7 +142,11 @@ def run_check(id):
             )
             conn.commit()
 
-    flash('Проверка успешно выполнена', 'success')
+    if status_code is None:
+        flash('Произошла ошибка при проверке', 'danger')
+    else:
+        flash('Страница успешно проверена', 'success')
+
     return redirect(url_for('show_url', id=id))
 
 
