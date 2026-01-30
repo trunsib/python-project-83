@@ -1,0 +1,7 @@
+Flask
+psycopg2-binary
+validators
+requests
+beautifulsoup4
+python-dotenv
+gunicorn
