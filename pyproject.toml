@@ -3,10 +3,13 @@ name = "hexlet-code"
 version = "0.1.0"
 description = "Page Analyzer project"
 package-mode = false
+
 authors = [
   { name = "trun", email = "e.s.trunov@gmail.com" }
 ]
+
 readme = "README.md"
+
 dependencies = [
     "flask",
     "psycopg2-binary",
@@ -16,7 +19,3 @@ dependencies = [
     "python-dotenv",
     "gunicorn"
 ]
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
