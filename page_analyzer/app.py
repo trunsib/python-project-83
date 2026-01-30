@@ -75,6 +75,7 @@ def urls():
                 '''
             )
             urls_list = cur.fetchall()
+
     return render_template('urls.html', urls=urls_list)
 
 
@@ -112,6 +113,7 @@ def run_check(id):
             if not row:
                 flash('URL не найден', 'danger')
                 return redirect(url_for('urls'))
+
             url_to_check = row['name']
 
     try:
@@ -152,3 +154,4 @@ def run_check(id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
