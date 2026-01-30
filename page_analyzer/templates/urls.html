@@ -12,7 +12,17 @@
     <main class="container py-5">
       <h1 class="mb-4">URLs</h1>
 
-      <table class="table table-bordered" data-test="urls">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mt-3">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <table class="table table-bordered table-striped table-hover mt-3" data-test="urls">
         <thead>
           <tr>
             <th>ID</th>
@@ -31,8 +41,8 @@
                 {{ url.name }}
               </a>
             </td>
-            <td>{{ url.created_at }}</td>
-            <td>{{ url.last_check or '' }}</td>
+            <td>{{ url.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            <td>{{ url.last_check.strftime('%Y-%m-%d %H:%M:%S') if url.last_check else '' }}</td>
             <td>{{ url.last_status or '' }}</td>
           </tr>
           {% endfor %}
