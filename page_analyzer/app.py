@@ -70,14 +70,14 @@ def urls():
                     urls.id,
                     urls.name,
                     urls.created_at,
-                    MAX(url_checks.created_at) AS last_check,
                     (
                         SELECT status_code
                         FROM url_checks
                         WHERE url_id = urls.id
                         ORDER BY created_at DESC
                         LIMIT 1
-                    ) AS last_status
+                    ) AS last_status,
+                    MAX(url_checks.created_at) AS last_check
                 FROM urls
                 LEFT JOIN url_checks
                     ON urls.id = url_checks.url_id
