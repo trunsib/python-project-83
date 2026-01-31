@@ -34,7 +34,10 @@ def add_url():
 
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('SELECT id FROM urls WHERE name = %s', (normalized_url,))
+            cur.execute(
+                'SELECT id FROM urls WHERE name = %s',
+                (normalized_url,)
+            )
             existing = cur.fetchone()
 
             if existing:
@@ -42,9 +45,14 @@ def add_url():
                 return redirect(url_for('show_url', id=existing['id']))
 
             cur.execute(
-                'INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id',
+                '''
+                INSERT INTO urls (name, created_at)
+                VALUES (%s, %s)
+                RETURNING id
+                ''',
                 (normalized_url, datetime.utcnow())
             )
+
             url_id = cur.fetchone()['id']
             conn.commit()
 
@@ -63,17 +71,21 @@ def urls():
                     urls.name,
                     urls.created_at,
                     MAX(url_checks.created_at) AS last_check,
-                    (SELECT status_code 
-                     FROM url_checks 
-                     WHERE url_id = urls.id 
-                     ORDER BY created_at DESC 
-                     LIMIT 1) AS last_status
+                    (
+                        SELECT status_code
+                        FROM url_checks
+                        WHERE url_id = urls.id
+                        ORDER BY created_at DESC
+                        LIMIT 1
+                    ) AS last_status
                 FROM urls
-                LEFT JOIN url_checks ON urls.id = url_checks.url_id
+                LEFT JOIN url_checks
+                    ON urls.id = url_checks.url_id
                 GROUP BY urls.id
                 ORDER BY urls.id DESC
                 '''
             )
+
             urls_list = cur.fetchall()
 
     return render_template('urls.html', urls=urls_list)
@@ -83,7 +95,11 @@ def urls():
 def show_url(id):
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('SELECT * FROM urls WHERE id = %s', (id,))
+            cur.execute(
+                'SELECT * FROM urls WHERE id = %s',
+                (id,)
+            )
+
             url = cur.fetchone()
 
             if not url:
@@ -92,13 +108,20 @@ def show_url(id):
 
             cur.execute(
                 '''
-                SELECT id, created_at, status_code, h1, title, description
+                SELECT
+                    id,
+                    status_code,
+                    h1,
+                    title,
+                    description,
+                    created_at
                 FROM url_checks
                 WHERE url_id = %s
                 ORDER BY id DESC
                 ''',
                 (id,)
             )
+
             checks = cur.fetchall()
 
     return render_template('url.html', url=url, checks=checks)
@@ -108,8 +131,13 @@ def show_url(id):
 def run_check(id):
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute('SELECT name FROM urls WHERE id = %s', (id,))
+            cur.execute(
+                'SELECT name FROM urls WHERE id = %s',
+                (id,)
+            )
+
             row = cur.fetchone()
+
             if not row:
                 flash('URL не найден', 'danger')
                 return redirect(url_for('urls'))
@@ -119,29 +147,55 @@ def run_check(id):
     try:
         response = requests.get(url_to_check, timeout=10)
         status_code = response.status_code
+
+        if status_code >= 400:
+            raise requests.RequestException()
+
         html = response.text
+
     except requests.RequestException:
         status_code = None
         html = ''
 
     soup = BeautifulSoup(html, 'html.parser')
+
     h1_tag = soup.find('h1')
     title_tag = soup.find('title')
     description_tag = soup.find('meta', attrs={'name': 'description'})
 
     h1_text = h1_tag.get_text(strip=True) if h1_tag else None
     title_text = title_tag.get_text(strip=True) if title_tag else None
-    description_text = description_tag['content'].strip() if description_tag and description_tag.get('content') else None
+    description_text = (
+        description_tag.get('content').strip()
+        if description_tag and description_tag.get('content')
+        else None
+    )
 
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 '''
-                INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)
+                INSERT INTO url_checks
+                (
+                    url_id,
+                    status_code,
+                    h1,
+                    title,
+                    description,
+                    created_at
+                )
                 VALUES (%s, %s, %s, %s, %s, %s)
                 ''',
-                (id, status_code, h1_text, title_text, description_text, datetime.utcnow())
+                (
+                    id,
+                    status_code,
+                    h1_text,
+                    title_text,
+                    description_text,
+                    datetime.utcnow()
+                )
             )
+
             conn.commit()
 
     if status_code is None:
@@ -153,5 +207,4 @@ def run_check(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    
+    app.run()
