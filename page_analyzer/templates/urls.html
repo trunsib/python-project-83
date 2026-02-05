@@ -28,8 +28,8 @@
             <th>ID</th>
             <th>Name</th>
             <th>Created at</th>
-            <th>Дата последней проверки</th>
             <th>Код последней проверки</th>
+            <th>Дата последней проверки</th>
           </tr>
         </thead>
         <tbody>
@@ -42,8 +42,10 @@
               </a>
             </td>
             <td>{{ url.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-            <td>{{ url.last_check.strftime('%Y-%m-%d %H:%M:%S') if url.last_check else '' }}</td>
             <td>{{ url.last_status or '' }}</td>
+            <td>
+              {{ url.last_check.strftime('%Y-%m-%d %H:%M:%S') if url.last_check else '' }}
+            </td>
           </tr>
           {% endfor %}
         </tbody>
