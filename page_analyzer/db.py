@@ -1,6 +1,7 @@
 """Работа с базой данных."""
 
 import sqlite3
+from datetime import datetime
 
 DATABASE = 'page_analyzer.db'
 
@@ -74,6 +75,6 @@ def add_check(url_id, status_code, title, description, h1=None):
     """Добавляет новую проверку."""
     with get_db_connection() as conn:
         conn.execute('''
-            INSERT INTO url_checks (url_id, status_code, h1, title, description)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (url_id, status_code, h1, title, description))
+            INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (url_id, status_code, h1, title, description, datetime.utcnow()))
