@@ -49,7 +49,7 @@ def show_url(url_id):
     if not url:
         return 'Страница не найдена', 404
     checks = get_checks_for_url(url_id)
-    return render_template('show.html', url=url, checks=checks)
+    return render_template('url.html', url=url, checks=checks)
 
 @app.route('/urls/<int:url_id>/checks', methods=['POST'])
 def check_url(url_id):
