@@ -1,11 +1,17 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+import os
+import validators
 import requests
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, redirect, url_for, flash
+
 from page_analyzer.url_normalizer import normalize_url
 from page_analyzer.parser import parse_metadata
 from page_analyzer.db import (
     init_db, add_url, get_url_by_name, get_all_urls,
     get_url_by_id, get_checks_for_url, add_check
 )
+
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
