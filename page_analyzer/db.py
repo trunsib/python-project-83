@@ -25,11 +25,13 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 url_id INTEGER REFERENCES urls(id),
                 status_code INTEGER,
+                h1 TEXT,
                 title TEXT,
                 description TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        conn.commit()
 
 def add_url(name):
     """Добавляет новый URL в БД. Возвращает id."""
@@ -47,7 +49,7 @@ def get_all_urls():
     with get_db_connection() as conn:
         return conn.execute('''
             SELECT u.id, u.name, u.created_at,
-                   uc.status_code, uc.title, uc.description, uc.created_at as last_check
+                   uc.status_code, uc.h1, uc.title, uc.description, uc.created_at as last_check
             FROM urls u
             LEFT JOIN url_checks uc ON u.id = uc.url_id
             WHERE uc.created_at = (
@@ -68,10 +70,10 @@ def get_checks_for_url(url_id):
             SELECT * FROM url_checks WHERE url_id = ? ORDER BY created_at DESC
         ''', (url_id,)).fetchall()
 
-def add_check(url_id, status_code, title, description):
+def add_check(url_id, status_code, title, description, h1=None):
     """Добавляет новую проверку."""
     with get_db_connection() as conn:
         conn.execute('''
-            INSERT INTO url_checks (url_id, status_code, title, description)
-            VALUES (?, ?, ?, ?)
-        ''', (url_id, status_code, title, description))
+            INSERT INTO url_checks (url_id, status_code, h1, title, description)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (url_id, status_code, h1, title, description))
