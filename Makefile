@@ -9,8 +9,13 @@ dev:
 start:
 	gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
 
+# Добавляем эту цель для тестов Хекслета
+start-server:
+	gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
+
 build:
 	./build.sh
 	
 render-start:
 	gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer:app
+	
