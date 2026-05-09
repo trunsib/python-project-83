@@ -61,8 +61,8 @@ def check_url(url_id):
         response = requests.get(url['name'], timeout=10)
         response.raise_for_status()
         status_code = response.status_code
-        title, description = parse_metadata(response.text)
-        add_check(url_id, status_code, title, description)
+        h1, title, description = parse_metadata(response.text)
+        add_check(url_id, status_code, title, description, h1)
         flash('Страница успешно проверена', 'success')
     except requests.RequestException:
         flash('Ошибка при проверке страницы', 'danger')
