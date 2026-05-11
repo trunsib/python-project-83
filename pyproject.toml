@@ -6,7 +6,7 @@ authors = [
   { name = "trun", email = "e.s.trunov@gmail.com" }
 ]
 readme = "README.md"
-requires-python = ">=3.10,<3.11"
+requires-python = ">=3.10"
 
 dependencies = [
   "flask",
@@ -18,9 +18,9 @@ dependencies = [
   "gunicorn",
 ]
 
-[tool.poetry]
-packages = [{ include = "page_analyzer" }]
-
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["page_analyzer"]
