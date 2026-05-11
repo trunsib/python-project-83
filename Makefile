@@ -10,7 +10,8 @@ start-server:
 	uv run gunicorn --chdir page_analyzer app:app
 
 setup:
-	uv venv --allow-existing .venv --python 3.10
+	rm -rf .venv
+	uv venv .venv --python 3.10
 	uv pip install -r pyproject.toml
 
 build:
