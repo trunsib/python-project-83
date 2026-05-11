@@ -6,8 +6,8 @@ install:
 dev:
 	uv run flask --debug --app page_analyzer:app run
 
-start:
-	uv run gunicorn --chdir page_analyzer -w 5 -b 0.0.0.0:8000 app:app
+start-server:
+	uv run gunicorn --chdir page_analyzer app:app
 
 setup:
 	uv venv --allow-existing .venv --python 3.10
