@@ -11,6 +11,7 @@ start:
 
 setup:
 	rm -rf .venv
+	uv venv .venv --python 3.10
 	uv sync
 
 build:
