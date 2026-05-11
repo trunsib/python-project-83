@@ -10,7 +10,8 @@ start:
 	uv run gunicorn --chdir code -w 5 -b 0.0.0.0:8000 page_analyzer:app
 
 setup:
-	uv sync --frozen
+	rm -rf .venv
+	uv sync
 
 build:
 	./build.sh
