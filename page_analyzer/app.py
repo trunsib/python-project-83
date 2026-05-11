@@ -10,6 +10,12 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 
 from page_analyzer.db import get_connection
 
+def truncate(text, length=255):
+    if not text:
+        return text
+    text = text.strip()
+    return text if len(text) <= length else text[:length - 3] + "..."
+
 load_dotenv()
 
 app = Flask(__name__)
