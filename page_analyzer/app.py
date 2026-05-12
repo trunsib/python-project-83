@@ -5,7 +5,6 @@ import validators
 import requests
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, flash
-from page_analyzer.db import get_connection
 
 from page_analyzer.db import (
     find_url_by_name,
