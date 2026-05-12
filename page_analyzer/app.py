@@ -13,8 +13,13 @@ from page_analyzer.db import get_connection
 def truncate(text, limit=255):
     if not text:
         return text
+
     text = text.strip()
-    return text if len(text) <= limit else text[:limit - 3] + "..."
+
+    if len(text) > limit:
+        return text[:limit] + '...'
+
+    return text
 
 load_dotenv()
 
