@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, flash
 
-from page_analyzer.db import get_connection, init_db
+from page_analyzer.db import get_connection
 
 def truncate(text, limit=255):
     if not text:
