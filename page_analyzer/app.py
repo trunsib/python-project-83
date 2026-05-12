@@ -10,6 +10,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 
 from page_analyzer.db import get_connection
 
+
 def truncate(text, limit=60):
     if not text:
         return text
@@ -20,6 +21,7 @@ def truncate(text, limit=60):
         return text[:limit] + '...'
 
     return text
+
 
 load_dotenv()
 
