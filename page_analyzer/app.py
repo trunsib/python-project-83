@@ -8,13 +8,13 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, flash
 
-from page_analyzer.db import get_connection
+from page_analyzer.db import get_connection, init_db
 
 def truncate(text, limit=255):
     if not text:
         return text
 
-    text = text.strip()
+    text = ' '.join(text.strip().split())
 
     if len(text) > limit:
         return text[:limit] + '...'
@@ -226,4 +226,5 @@ def run_check(id):
 
 
 if __name__ == '__main__':
+    init_db()
     app.run()
