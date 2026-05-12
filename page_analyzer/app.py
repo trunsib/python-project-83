@@ -169,10 +169,18 @@ def run_check(id):
     title_tag = soup.find('title')
     description_tag = soup.find('meta', attrs={'name': 'description'})
 
-    h1_text = h1_tag.get_text(strip=True) if h1_tag else None
-    title_text = title_tag.get_text(strip=True) if title_tag else None
+    h1_text = (
+        truncate(h1_tag.get_text(strip=True))
+        if h1_tag else None
+    )
+
+    title_text = (
+        truncate(title_tag.get_text(strip=True))
+        if title_tag else None
+    )
+
     description_text = (
-        description_tag.get('content').strip()
+        truncate(description_tag.get('content').strip())
         if description_tag and description_tag.get('content')
         else None
     )
