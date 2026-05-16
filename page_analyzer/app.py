@@ -17,7 +17,6 @@ from page_analyzer.db import (
 from page_analyzer.parser import parse_html
 from page_analyzer.url_normalizer import normalize_url
 
-
 load_dotenv()
 
 app = Flask(__name__)
