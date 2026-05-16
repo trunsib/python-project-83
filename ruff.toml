@@ -11,25 +11,23 @@ exclude = [
 target-version = "py310"
 
 select = [
-    "E",   # pycodestyle errors
-    "W",   # pycodestyle warnings
-    "F",   # pyflakes
-    "I",   # isort
-    "C",   # flake8-comprehensions
-    "B",   # flake8-bugbear
-    "UP",  # pyupgrade
+    "E",
+    "W",
+    "F",
+    "I",
+    "C",
+    "B",
+    "UP",
 ]
 
 ignore = [
-    "E501",   # line too long (исправлено автоматически)
-    "B008",   # do not perform function calls in argument defaults
-    "C901",   # too complex (пока оставим)
+    "E501",
+    "B008",
+    "C901",
 ]
-
-max-complexity = 10
 
 line-length = 100
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["page_analyzer"]
 combine-as-imports = true
