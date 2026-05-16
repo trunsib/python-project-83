@@ -1,3 +1,6 @@
+line-length = 100
+target-version = "py310"
+
 exclude = [
     ".git",
     "__pycache__",
@@ -8,26 +11,16 @@ exclude = [
     "*.egg-info",
 ]
 
-target-version = "py310"
-
-select = [
+lint.select = [
     "E",
     "W",
     "F",
     "I",
-    "C",
-    "B",
-    "UP",
 ]
 
-ignore = [
+lint.ignore = [
     "E501",
-    "B008",
-    "C901",
 ]
 
-line-length = 100
-
-[tool.ruff.lint.isort]
+[lint.isort]
 known-first-party = ["page_analyzer"]
-combine-as-imports = true
