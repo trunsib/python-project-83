@@ -14,8 +14,8 @@ from page_analyzer.db import (
     get_url_checks,
     insert_check,
 )
-from page_analyzer.url_normalizer import normalize_url
 from page_analyzer.parser import parse_html
+from page_analyzer.url_normalizer import normalize_url
 
 
 load_dotenv()
