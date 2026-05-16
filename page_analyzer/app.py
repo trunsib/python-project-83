@@ -1,18 +1,18 @@
 import os
 from datetime import datetime
 
-import validators
 import requests
+import validators
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, flash, redirect, render_template, request, url_for
 
 from page_analyzer.db import (
     find_url_by_name,
-    insert_url,
-    get_urls,
     get_url_by_id,
     get_url_checks,
+    get_urls,
     insert_check,
+    insert_url,
 )
 from page_analyzer.parser import parse_html
 from page_analyzer.url_normalizer import normalize_url
